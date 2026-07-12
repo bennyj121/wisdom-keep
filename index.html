@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rooted — the daily etymology game | Wisdom Keep</title>
+<meta name="description" content="One clever word-origin puzzle a day. Guess the word from its roots, earn Lore, and build your Knowledge Kingdom. Free to play.">
+<meta property="og:title" content="Rooted — the daily etymology game">
+<meta property="og:description" content="Guess today's word from its ancient roots. Earn Lore. Build your Knowledge Kingdom.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏰</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand" onclick="showView('play')">
+    <span class="brand-icon">🏰</span>
+    <div><h1>Wisdom Keep</h1><p class="tagline">home of <strong>Rooted</strong>, the daily etymology game</p></div>
+  </div>
+  <nav>
+    <button data-view="play" class="active" onclick="showView('play')">Play</button>
+    <button data-view="kingdom" onclick="showView('kingdom')">Kingdom</button>
+    <button data-view="archive" onclick="showView('archive')">Archive</button>
+    <button data-view="pass" onclick="showView('pass')">Kingdom Pass</button>
+    <button id="authBtn" onclick="onAuthClick()">Sign in</button>
+  </nav>
+</header>
+
+<div id="statusBar" class="status-bar hidden">
+  <span title="Lore">📖 <b id="loreVal">0</b></span>
+  <span title="Streak">🔥 <b id="streakVal">0</b></span>
+  <span id="premiumBadge" class="hidden" title="Kingdom Pass">👑</span>
+</div>
+
+<main>
+  <!-- PLAY -->
+  <section id="view-play" class="view">
+    <div class="puzzle-head">
+      <h2>Rooted <span id="puzzleNum"></span></h2>
+      <p class="sub">A word is hidden. Reveal clues about its origin — the fewer you use, the more Lore you earn.</p>
+    </div>
+    <div id="clueList"></div>
+    <button id="revealBtn" class="ghost-btn" onclick="revealClue()">Reveal next clue</button>
+    <form id="guessForm" onsubmit="return submitGuess(event)">
+      <input id="guessInput" type="text" autocomplete="off" placeholder="Your guess…" maxlength="30">
+      <button type="submit" class="gold-btn">Guess</button>
+    </form>
+    <div id="guessLog"></div>
+    <button id="giveUpBtn" class="text-btn hidden" onclick="giveUp()">I give up — show me the word</button>
+    <div id="resultCard" class="result-card hidden"></div>
+  </section>
+
+  <!-- KINGDOM -->
+  <section id="view-kingdom" class="view hidden">
+    <h2>Your Knowledge Kingdom</h2>
+    <p class="sub">Spend Lore to raise buildings. Nothing you learn here evaporates — every day of play is a brick laid.</p>
+    <div id="kingdomMap" class="kingdom-map"></div>
+    <div id="buildingShop"></div>
+    <div class="districts-soon">
+      <h3>Districts to come</h3>
+      <div class="soon-grid">
+        <div>🗺️ Cartographer's Guild<br><small>geography — coming soon</small></div>
+        <div>🔭 Observatory<br><small>science — coming soon</small></div>
+        <div>📯 Chronicle Hall<br><small>history — coming soon</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHIVE -->
+  <section id="view-archive" class="view hidden">
+    <h2>Puzzle Archive</h2>
+    <div id="archiveBody"></div>
+  </section>
+
+  <!-- KINGDOM PASS -->
+  <section id="view-pass" class="view hidden">
+    <h2>The Kingdom Pass</h2>
+    <p class="sub">Support the Keep and unlock everything.</p>
+    <ul class="perks">
+      <li>🗝️ Full archive of every past puzzle</li>
+      <li>👑 Exclusive golden buildings &amp; monuments</li>
+      <li>🛡️ Streak insurance — one free missed day</li>
+      <li>📊 Detailed mastery stats (coming soon)</li>
+      <li>🚫 Ad-free, forever</li>
+    </ul>
+    <div class="price-grid">
+      <div class="price-card">
+        <h3>Monthly</h3><div class="price">$4<small>/mo</small></div>
+        <button class="gold-btn" onclick="checkout('monthly')">Get the Pass</button>
+      </div>
+      <div class="price-card best">
+        <div class="ribbon">Best value</div>
+        <h3>Yearly</h3><div class="price">$30<small>/yr</small></div>
+        <button class="gold-btn" onclick="checkout('yearly')">Get the Pass</button>
+      </div>
+    </div>
+    <p id="payMsg" class="sub"></p>
+  </section>
+
+  <!-- ACCOUNT -->
+  <section id="view-account" class="view hidden">
+    <h2>Your account</h2>
+    <div id="accountBody"></div>
+  </section>
+</main>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal hidden">
+  <div class="modal-card">
+    <button class="close" onclick="closeAuth()">×</button>
+    <h3>Sign in to Wisdom Keep</h3>
+    <p class="sub">We'll email you a magic link — no password needed. Signing in saves your Lore, streaks, and kingdom forever.</p>
+    <form onsubmit="return sendMagicLink(event)">
+      <input id="emailInput" type="email" required placeholder="you@example.com">
+      <button type="submit" class="gold-btn">Send magic link</button>
+    </form>
+    <div id="otpStep" class="hidden">
+      <p class="sub">Check your email. Click the link, or paste the 6-digit code here if your email shows one:</p>
+      <form onsubmit="return verifyCode(event)">
+        <input id="codeInput" type="text" placeholder="123456" maxlength="6">
+        <button type="submit" class="ghost-btn">Verify code</button>
+      </form>
+    </div>
+    <p id="authMsg" class="sub"></p>
+  </div>
+</div>
+
+<footer>
+  <p>🌱 A new word takes root every day at midnight UTC.</p>
+  <p><a href="#" onclick="showView('pass');return false;">Kingdom Pass</a> · <a href="mailto:johnston121@gmail.com">Contact</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

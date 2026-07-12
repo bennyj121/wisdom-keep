@@ -1,0 +1,183 @@
+:root {
+  --bg: #1a1812; --bg2: #23201a;
+  --bg-card: #262218; --bg-card2: #2e2a1e;
+  --ink: #e8e0cc; --ink-dim: #a89f86;
+  --gold: #d4a944; --gold-dark: #a8842e;
+  --green: #7da867; --red: #c0604d;
+  --border: #3d382a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: radial-gradient(ellipse at top, #221f16 0%, #16140e 100%);
+  color: var(--ink);
+  font-family: Georgia, 'Times New Roman', serif;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+header {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+  padding: 18px 24px; border-bottom: 1px solid var(--border);
+}
+.brand { display: flex; gap: 12px; align-items: center; cursor: pointer; }
+.brand-icon { font-size: 2.2rem; }
+h1 { font-size: 1.4rem; letter-spacing: 1px; color: var(--gold); }
+.tagline { font-size: .8rem; color: var(--ink-dim); }
+nav { display: flex; gap: 6px; flex-wrap: wrap; }
+nav button {
+  background: none; border: 1px solid transparent; color: var(--ink-dim);
+  font-family: inherit; font-size: .95rem; padding: 7px 14px;
+  border-radius: 8px; cursor: pointer;
+}
+nav button:hover { color: var(--ink); }
+nav button.active { color: var(--gold); border-color: var(--border); background: var(--bg-card); }
+.status-bar {
+  display: flex; gap: 18px; justify-content: center; padding: 10px;
+  font-size: 1rem; border-bottom: 1px solid var(--border); background: #1d1a12;
+}
+main { flex: 1; width: 100%; max-width: 640px; margin: 0 auto; padding: 28px 18px 60px; }
+.view h2 { color: var(--gold); margin-bottom: 6px; }
+.sub { color: var(--ink-dim); font-size: .95rem; margin-bottom: 18px; line-height: 1.5; }
+.hidden { display: none !important; }
+
+/* Clues */
+.clue-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+  animation: rise .35s ease;
+}
+.clue-card .k { color: var(--gold); font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; }
+.clue-card .v { margin-top: 4px; font-size: 1.05rem; line-height: 1.5; }
+.clue-locked {
+  border-style: dashed; color: var(--ink-dim); text-align: center;
+  padding: 10px; font-size: .85rem;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+
+.ghost-btn, .gold-btn, .text-btn {
+  font-family: inherit; cursor: pointer; border-radius: 10px; font-size: 1rem;
+}
+.ghost-btn {
+  width: 100%; padding: 12px; margin: 8px 0;
+  background: none; border: 1px solid var(--gold-dark); color: var(--gold);
+}
+.ghost-btn:hover { background: rgba(212,169,68,.08); }
+.gold-btn {
+  padding: 12px 22px; border: none; font-weight: bold;
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark)); color: #1a1812;
+}
+.gold-btn:hover { filter: brightness(1.1); }
+.text-btn { background: none; border: none; color: var(--ink-dim); text-decoration: underline; margin-top: 10px; }
+
+#guessForm { display: flex; gap: 8px; margin-top: 12px; }
+#guessForm input {
+  flex: 1; padding: 12px 14px; border-radius: 10px; font-size: 1.05rem;
+  background: var(--bg-card2); border: 1px solid var(--border); color: var(--ink);
+  font-family: inherit;
+}
+#guessLog { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.wrong-guess {
+  background: rgba(192,96,77,.15); border: 1px solid rgba(192,96,77,.4);
+  color: var(--red); padding: 4px 12px; border-radius: 16px; font-size: .9rem;
+}
+
+.result-card {
+  margin-top: 20px; padding: 22px; border-radius: 14px; text-align: center;
+  background: var(--bg-card); border: 1px solid var(--gold-dark);
+  animation: rise .4s ease;
+}
+.result-card .big-word { font-size: 2rem; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+.result-card .fact { margin: 14px 0; line-height: 1.6; color: var(--ink); font-style: italic; }
+.result-card .lore-earned { color: var(--green); font-size: 1.1rem; margin-bottom: 12px; }
+
+/* Kingdom */
+.kingdom-map {
+  min-height: 120px; border: 1px solid var(--border); border-radius: 14px;
+  background: linear-gradient(180deg, #2a3320 0%, #232a1a 60%, #2e2a1e 100%);
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end;
+  padding: 24px; margin-bottom: 22px; font-size: 2.2rem;
+}
+.kingdom-map .empty-note { font-size: .95rem; color: var(--ink-dim); font-style: italic; }
+.map-building { text-align: center; }
+.map-building small { display: block; font-size: .6rem; color: var(--ink-dim); font-family: inherit; }
+.building-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
+}
+.building-row.owned { border-color: var(--green); opacity: .85; }
+.building-row.locked { opacity: .55; }
+.building-row .name { font-weight: bold; }
+.building-row .desc { font-size: .85rem; color: var(--ink-dim); }
+.build-btn {
+  white-space: nowrap; padding: 8px 14px; border-radius: 8px; cursor: pointer;
+  background: none; border: 1px solid var(--gold-dark); color: var(--gold); font-family: inherit;
+}
+.build-btn:disabled { opacity: .4; cursor: default; }
+.districts-soon { margin-top: 26px; }
+.districts-soon h3 { color: var(--ink-dim); font-size: .95rem; margin-bottom: 10px; }
+.soon-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+.soon-grid div {
+  flex: 1; min-width: 150px; text-align: center; padding: 16px 8px;
+  border: 1px dashed var(--border); border-radius: 12px; color: var(--ink-dim);
+}
+
+/* Archive */
+.archive-grid { display: flex; flex-direction: column; gap: 6px; }
+.archive-row {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px; cursor: pointer;
+}
+.archive-row:hover { border-color: var(--gold-dark); }
+
+/* Pricing */
+.perks { list-style: none; margin-bottom: 22px; }
+.perks li { padding: 6px 0; font-size: 1.02rem; }
+.price-grid { display: flex; gap: 14px; flex-wrap: wrap; }
+.price-card {
+  flex: 1; min-width: 200px; position: relative; text-align: center;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px 16px;
+}
+.price-card.best { border-color: var(--gold); }
+.price-card .ribbon {
+  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: #1a1812; font-size: .75rem; font-weight: bold;
+  padding: 2px 12px; border-radius: 10px;
+}
+.price { font-size: 2.4rem; color: var(--gold); margin: 10px 0 16px; }
+.price small { font-size: 1rem; color: var(--ink-dim); }
+
+/* Modal */
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65);
+  display: flex; align-items: center; justify-content: center; z-index: 50;
+}
+.modal-card {
+  position: relative; background: var(--bg2, #23201a); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px; width: min(420px, 92vw);
+  background: #23201a;
+}
+.modal-card .close {
+  position: absolute; top: 10px; right: 14px; background: none; border: none;
+  color: var(--ink-dim); font-size: 1.4rem; cursor: pointer;
+}
+.modal-card h3 { color: var(--gold); margin-bottom: 8px; }
+.modal-card form { display: flex; gap: 8px; margin: 12px 0; }
+.modal-card input {
+  flex: 1; padding: 11px; border-radius: 8px; font-family: inherit;
+  background: var(--bg-card2); border: 1px solid var(--border); color: var(--ink);
+}
+
+footer {
+  text-align: center; padding: 24px; color: var(--ink-dim);
+  font-size: .85rem; border-top: 1px solid var(--border); line-height: 1.8;
+}
+footer a { color: var(--gold); }
+
+#accountBody .stat-line { padding: 6px 0; font-size: 1.05rem; }
+@media (max-width: 560px) {
+  header { justify-content: center; text-align: center; }
+  .brand { width: 100%; justify-content: center; }
+}
