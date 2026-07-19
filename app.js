@@ -1,5 +1,7 @@
 /* Wisdom Keep — Rooted daily etymology game */
-const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
+  auth: { flowType: "implicit" }, // magic links must work even when opened in a different browser
+});
 
 let session = null;
 let profile = null;
@@ -52,7 +54,7 @@ async function sendMagicLink(e) {
   const { error } = await sb.auth.signInWithOtp({
     email, options: { emailRedirectTo: CONFIG.SITE_URL },
   });
-  $("authMsg").textContent = error ? error.message : "Sent! Check your inbox.";
+  $("authMsg").textContent = error ? error.message : "Sent! Check your inbox for a 6-digit code (or a sign-in link).";
   if (!error) $("otpStep").classList.remove("hidden");
   return false;
 }
