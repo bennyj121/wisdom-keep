@@ -54,7 +54,7 @@ async function sendMagicLink(e) {
   const { error } = await sb.auth.signInWithOtp({
     email, options: { emailRedirectTo: CONFIG.SITE_URL },
   });
-  $("authMsg").textContent = error ? error.message : "Sent! Check your email for a 6-digit code.";
+  $("authMsg").textContent = error ? error.message : "Sent! Check your email for a sign-in code.";
   if (!error) $("otpStep").classList.remove("hidden");
   return false;
 }
