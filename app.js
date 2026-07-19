@@ -300,7 +300,13 @@ function renderAccount() {
     <div class="stat-line">📖 Lore: <b>${profile?.lore ?? 0}</b></div>
     <div class="stat-line">🔥 Streak: <b>${profile?.streak ?? 0}</b> (best ${profile?.best_streak ?? 0})</div>
     <div class="stat-line">👑 Kingdom Pass: <b>${isPremium() ? "Active" : "Not active"}</b></div>
-    <br><button class="ghost-btn" onclick="signOut()">Sign out</button>`;
+    <br>${profile?.stripe_customer_id ? `<button class="ghost-btn" onclick="manageSubscription()">Manage subscription</button>` : ""}
+    <button class="ghost-btn" onclick="signOut()">Sign out</button>`;
+}
+async function manageSubscription() {
+  const { body } = await api("stripe-portal", { method: "POST", body: "{}" });
+  if (body.url) location.href = body.url;
+  else alert(body.error || "Couldn't open the billing portal.");
 }
 
 /* ---------- init ---------- */
